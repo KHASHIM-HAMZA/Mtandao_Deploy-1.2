@@ -1,0 +1,38 @@
+# ================================
+# 1. Build Stage (Maven + JDK 17)
+# ================================
+FROM eclipse-temurin:17-jdk AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy Maven wrapper and pom first (better caching)
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+
+# Download dependencies
+RUN chmod +x mvnw && ./mvnw dependency:go-offline
+
+# Copy the rest of the code
+COPY src src
+
+# Build the application
+RUN ./mvnw -DskipTests clean package
+
+
+# ================================
+# 2. Runtime Stage (JRE only)
+# ================================
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+# Copy the JAR from build stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Railway will assign the port dynamically, but your Spring Boot should use 8081
+EXPOSE 8081
+
+# Start the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
