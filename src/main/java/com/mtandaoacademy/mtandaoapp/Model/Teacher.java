@@ -28,7 +28,12 @@ public class Teacher {
     private String experience; // e.g. "8 years"
 
     @ElementCollection
-    private List<String> subjects; // e.g. ["Mathematics", "Physics"]
+    @CollectionTable(
+            name = "teacher_subjects",
+            joinColumns = @JoinColumn(name = "teacher_id")
+    )
+    @Column(name = "subject")
+    private List<String> subjects;
 
     private LocalDateTime joinDate = LocalDateTime.now(); // defaults to now
 
