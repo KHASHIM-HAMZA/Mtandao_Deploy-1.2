@@ -26,13 +26,8 @@ public class Teacher {
     private String qualification; // e.g. MSc. Mathematics Education
 
     private String experience; // e.g. "8 years"
-    
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "teacher_subjects",
-            joinColumns = @JoinColumn(name = "teacher_id")
-    )
-    @Column(name = "subject")
+
+    @ElementCollection
     private List<String> subjects;
 
 

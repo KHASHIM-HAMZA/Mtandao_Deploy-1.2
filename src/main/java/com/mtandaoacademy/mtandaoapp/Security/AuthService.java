@@ -41,7 +41,6 @@ public class AuthService {
     }
 
 
-    @Transactional
     public AuthResponse register(RegisterRequest req) {
         if (userRepository.existsByEmail(req.getEmail())) {
             throw new RuntimeException("Email already used");
