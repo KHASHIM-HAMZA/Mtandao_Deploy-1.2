@@ -26,9 +26,15 @@ public class Teacher {
     private String qualification; // e.g. MSc. Mathematics Education
 
     private String experience; // e.g. "8 years"
+    
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "teacher_subjects",
+            joinColumns = @JoinColumn(name = "teacher_id")
+    )
+    @Column(name = "subject")
+    private List<String> subjects;
 
-    @ElementCollection
-    private List<String> subjects; // e.g. ["Mathematics", "Physics"]
 
     private LocalDateTime joinDate = LocalDateTime.now(); // defaults to now
 
