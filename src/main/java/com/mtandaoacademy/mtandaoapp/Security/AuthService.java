@@ -40,7 +40,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    @Transactional
+
     public AuthResponse register(RegisterRequest req) {
         if (userRepository.existsByEmail(req.getEmail())) {
             throw new RuntimeException("Email already used");
